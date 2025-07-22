@@ -1,17 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>Login</h1>
+{%extends 'base/main.html'%}
 
-<form action="" method="post">
+{%block content%}
+<div class="header-bar">
+<h1>Вход</h1>
+</div>
+
+<div class="card-body">
+  <form action="" method="post">
   {% csrf_token %}
   {{form.as_p}}
-  <input type="submit" value="Login">
+  <input class="button" type="submit" value="Вход">
 </form>
 <p2>У вас есть аккаунт? <a href="{%url 'register'%}">Регистрация</a></p2>
-</body>
-</html>
+</div>
+
+
+
+
+{% endblock %}

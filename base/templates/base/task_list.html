@@ -1,47 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
- {% if user.is_authenticated %}
-        <div class="user-panel">
-            Добро пожаловать, {{ user.username }}!
+{%extends 'base/main.html'%}
+
+{%block content%}
+
+<div class="header-bar">
+    <div>
+        <h1>Привет {{request.user|title}}</h1>
+        <h3>
+            {%if count%}
+            Незваершенных дел: <i>{{count}}</i>
+            {%else%}
+                Все дела завершены
+            {%endif%}
+        </h3>
+    </div>
+
+     {% if user.is_authenticated %}
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
-                <button type="submit">Выйти</button>
+                <button class="button" type="submit">Выйти</button>
             </form>
-        </div>
     {% else %}
         <a href="{% url 'login' %}">Войти</a>
     {% endif %}
+
+</div>
+
+<div id="search-add-wrapper">
+    <form method="GET" style="display: flex;">
+        <input type='text' name='search-area' placeholder="Поиск задачи" value="{{search_input}}">
+        <input class="button" type="submit" value='Поиск'>
+    </form>
+    <a id="add-link" href="{% url 'task-create' %}">&#x2b</a>
+</div>
+
 <hr>
-<a href="{% url 'task-create' %}">Добавить задачу</a>
-<h2>Список дел</h2>
 
- <form action="" method="get">
-     <input type="text" name="search-area" value="{{search_input}}">
-     <input type="submit" value="поиск">
- </form>
+<div class="task-items-werapper">
+    {% for task in tasks %}
+        <div class="task-wrapper">
+            {% if task.complete %}
+            <div class="task-title">
+                <div class="task-complete-icon"> </div>
+                <i><s><a href="{%url 'task-update' task.id%}">{{task}}</a></s></i>
+            </div>
+            {%else%}
+                <div class="task-title">
+                <div class="task-incomplete-icon"> </div>
+                <a href="{%url 'task-update' task.id%}">{{task}}</a>
+            </div>
+            {%endif%}
+            <a class="delete-link" href="{%url 'task-delete' task.id%}">&#215;</a>
+        </div>
 
-<table>
-    <tr>
-        <th>Задачи</th>
-        <th></th>
-    </tr>
-    {%for task in tasks%}
-    <tr>
-        <td>{{task.title}}</td>
-        <td><a href="{%url 'task' task.id%}">Посмотреть</a></td>
-        <td><a href="{%url 'task-update' task.id%}">Обновить</a></td>
-        <td><a href="{%url 'task-delete' task.id%}">Удалить</a></td>
-    </tr>
     {%empty%}
-        <h3>Нет задач</h3>
-    {%endfor%}
-</table>
+       <h3>Нет задач</h3>
+    {% endfor %}
+
+</div>
 
 
-</body>
-</html>
+
+<!--<div class="task-items-wrapper">-->
+<!--    {% for task in tasks %}-->
+<!--    <div class="task-wrapper">-->
+<!--        {%if task.complete%}-->
+<!--        <div class="task-title">-->
+<!--            <div class="task-complete-icon"></div>-->
+<!--            <i><s><a href="{%url 'task-update' task.id%}">{{task}}</a></s></i>-->
+<!--        </div>-->
+<!--        {%else%}-->
+<!--          <div class="task-title">-->
+<!--            <div class="task-incomplete-icon"></div>-->
+<!--            <a href="{%url 'task-update' task.id%}">{{task}}</a>-->
+<!--          </div>-->
+<!--        <a class="delete-link" href="{%url 'task-delete' task.id%}">&#215</a>-->
+
+<!--        {%endif%}-->
+<!--    </div>-->
+<!--    {%empty%}-->
+<!--        <h3>Нет задач</h3>-->
+<!--    {% endfor %}-->
+<!--</div>-->
+
+<!--<table>-->
+<!--    <tr>-->
+<!--        <th>Задачи</th>-->
+<!--        <th></th>-->
+<!--    </tr>-->
+<!--    {%for task in tasks%}-->
+<!--    <tr>-->
+<!--        <td>{{task.title}}</td>-->
+<!--        <td><a href="{%url 'task-update' task.id%}">Обновить</a></td>-->
+<!--        <td><a href="{%url 'task-delete' task.id%}">Удалить</a></td>-->
+<!--    </tr>-->
+<!--    {%empty%}-->
+<!--        <h3>Нет задач</h3>-->
+<!--    {%endfor%}-->
+<!--</table>-->
+
+<!--{% endblock %}-->
+

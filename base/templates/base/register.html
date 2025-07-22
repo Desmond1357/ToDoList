@@ -1,9 +1,28 @@
-<h1>Регистрация</h1>
+{%extends 'base/main.html'%}
 
-<form action="" method="post">
+{%block content%}
+
+<div class="header-bar">
+  <h1>Регистрация</h1>
+</div>
+
+<div class="card-body">
+  <form action="" method="post">
   {%csrf_token%}
-  {{form.as_p}}
-  <input type="submit" value="Регистрация">
-</form>
+    <label>{{form.username.label}}</label>
+      {{form.username}}
 
-<p>У вас уже есть аккаунт <a href="">Войти</a></p>
+    <label>{{form.password1.label}}</label>
+      {{form.password1}}
+
+    <label>{{form.password2.label}}</label>
+      {{form.password2}}
+
+  <input style="margin-top: 10px;" class="button" type="submit" value="Регистрация">
+</form>
+<p>У вас уже есть аккаунт <a href="{%url 'login'%}">Войти</a></p>
+</div>
+
+
+
+{% endblock %}

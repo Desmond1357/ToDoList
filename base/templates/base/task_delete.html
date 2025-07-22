@@ -1,6 +1,18 @@
-<a href="{% url 'tasks' %}">Вернуться назад</a>
-<form method="post">
+{%extends 'base/main.html'%}
+
+{%block content%}
+
+<div class="header-bar">
+    <a href="{% url 'tasks' %}">&#8592; Вернуться назад</a>
+</div>
+
+<div class="card-body">
+    <form method="post">
     {%csrf_token%}
     <p2>Вы уверены что хотите удалить эту задачу {{task_delete}}</p2>
-    <input type="submit" value="Delete">
+    <input class="button" type="submit" value="Удалить">
 </form>
+
+</div>
+
+{% endblock %}
